@@ -1,0 +1,48 @@
+
+import { Routes, Route, Link } from 'react-router-dom'
+import { useState } from 'react'
+import Recipe from './components/Recipe'
+import Register from './components/Register'
+import './App.css'
+import LogIn from './components/LogIn'
+import RecipeDetails from './components/RecipeDetails'
+import Favorite from './components/Favorite'
+
+function App() {
+  const [token, setToken] = useState(null)
+  const [recipes, setRecipes] = useState([])
+  const [favorite, setFavorite] = useState([])
+  const [moreDetails, setMoreDetails] = useState(null)  
+
+  return (
+    <>
+    <div>
+      <nav className='navBar'>
+        <div>
+          <Link to="/register" className='navLink'>Register</Link>
+          <Link to="/login" className='navLink'>Log In</Link>
+          <Link to="/recipe" className="navLink">Recipes</Link>
+          <Link to="/favorite" className="navLink">Favorite Recipes</Link>
+        </div>
+      </nav> 
+    <div className="container">
+      <br></br>
+      <Routes>
+          <Route path='/register' element={<Register setToken={setToken}/>}/>
+          <Route path='/login' element={<LogIn setToken={setToken}/>}/>
+          <Route path='/recipe' element={
+              <div key={moreDetails ? 'details' : 'list'}>
+              {moreDetails ? <RecipeDetails moreDetails={moreDetails} setMoreDetails={setMoreDetails} />
+               : <Recipe recipes={recipes} setRecipes={setRecipes} setMoreDetails={setMoreDetails} favorite={favorite} setFavorite={setFavorite} />}
+               </div>
+              }/>
+          <Route path='/favorite' element={<Favorite favorite={favorite} setFavorite={setFavorite}/>}/>
+      </Routes>
+    </div>
+    </div>
+ 
+    </>
+  )
+}
+
+export default App
