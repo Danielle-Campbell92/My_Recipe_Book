@@ -12,6 +12,7 @@ background-color: whitesmoke;
 opacity: .9;
 margin-right: 25%;
 margin-left: 25%;
+text-align: center;
 }
 
 h2{
@@ -43,7 +44,7 @@ body{
 } */
 
 .navBar{
-  background-color: green;
+  background: linear-gradient(darkgreen, rgb(55, 219, 55), darkgreen);
   display: flex;
   gap: 20px;
   align-items: center;
@@ -80,7 +81,7 @@ body{
 
 .card {
   border: 2px solid black;
-  background-color: whitesmoke;
+  background: linear-gradient(gray, whitesmoke, gray);
   padding: 15px;
   width: 300px;
   opacity: .9;
@@ -89,7 +90,7 @@ body{
 }
 
 .details-container{
-  background-color: whitesmoke;
+  background: linear-gradient(gray,whitesmoke, gray);
   opacity: .9;
   padding: 15px;
 }

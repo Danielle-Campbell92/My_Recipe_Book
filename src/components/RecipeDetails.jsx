@@ -13,7 +13,7 @@ console.log("Recipe Details received:", moreDetails)
                     <p>Type of Cuisine:{moreDetails.strArea}</p>
                     <p>Ingredients: {moreDetails.ingredients}</p>
                     <p>Instructions: {moreDetails.strInstructions}</p>
-                    <p>Link to Video: {" "} <a href={moreDetails.strYoutube} target="_blank" rel="noopener noreferrer">Watch!</a></p>
+                    <p>Link to Video: {" "} <a src={moreDetails.strYoutube}>Watch!</a></p>
                     <button onClick={()=> setMoreDetails(null)} className="button">Go Back</button>
                     </>
                 ) : (

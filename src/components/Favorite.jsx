@@ -6,7 +6,7 @@ function Favorite({favorite, setFavorite}){
     <div className="details-container">
         <h2>Favorite Recipes!</h2>
         {favorite.length === 0 ? (
-        <p>You haven't added any favorites yet.</p>
+        <p>No Favorites Added</p>
          ) : (
           favorite.map(recipe => (
             <div key={recipe.idMeal}>

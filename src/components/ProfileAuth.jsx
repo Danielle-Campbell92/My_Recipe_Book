@@ -24,14 +24,12 @@ useEffect(()=> {
                     if (response.ok){
                         setUserInfo(result)
                     }else{
-                        setError(result.message || "Login Failed."
-                        )
+                        setError(result.message || "Login Failed.")
                     }
-                    
                 }catch(error){
                     console.log(error)
                 }}
-
+                
                 if(token){
                     getUserInfo()
                 }}, [token])
