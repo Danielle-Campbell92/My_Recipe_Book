@@ -3,7 +3,7 @@ function Favorite({favorite, setFavorite}){
 
     return(
     <>
-    <div>
+    <div className="details-container">
         <h2>Favorite Recipes!</h2>
         {favorite.length === 0 ? (
         <p>You haven't added any favorites yet.</p>

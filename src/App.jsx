@@ -16,8 +16,8 @@ function App() {
   const [moreDetails, setMoreDetails] = useState(null)  
 
 useEffect(()=> {
-  console.log("current user", username)
-}, [username])
+  const storedUsername = localStorage.getItem("username")
+  if (storedUsername) setUsername(storedUsername)})
 
   useEffect(() => {
     const storedToken = localStorage.getItem("token");

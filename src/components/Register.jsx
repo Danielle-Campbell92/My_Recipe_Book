@@ -7,6 +7,7 @@ function Register({setToken}){
     const[password, setPassword] = useState("")
     const[error, setError] = useState(null)
     const[success, setSuccess] = useState(false)
+    const navigate = useNavigate()
 
     function validateForm(){
         if(username.length < 6){
@@ -45,7 +46,7 @@ function Register({setToken}){
         
         if(result.token){
             setToken(result.token)
-            localStorage("token", result.token)
+            localStorage.setItem("token", result.token)
             navigate("/recipe")
         }else{
             setError(result.message || "Try again")
@@ -57,6 +58,7 @@ function Register({setToken}){
 
     return(
         <>
+        <div className='details-container'>
         <h2>Sign Up for More Recipes!</h2>
         {error && <p className='error'>{error}</p>}
         {success && <p className='success'>Registration Successful!🎉</p>}
@@ -73,6 +75,7 @@ function Register({setToken}){
             <br></br>
             <button type='submit' className='button'>Submit!</button>
         </form>
+        </div>
         </>
     )
 }

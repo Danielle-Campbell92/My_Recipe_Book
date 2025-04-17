@@ -3,7 +3,7 @@ console.log("Recipe Details received:", moreDetails)
 
     return(
         <>
-        <div>
+        <div className="details-container">
             {
                 moreDetails ? (
                     <>

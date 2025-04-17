@@ -31,8 +31,9 @@ try{
             console.log("Login result:", result)
 
             if (result.token){
+                console.log("Save to Storage")
+                localStorage.setItem("token", result.token || username)
                 setToken(result.token)
-                localStorage.setItem("token", result.token)
                 navigate("/recipe")
             }else{
                 setError(result.message || "Login Failed."
@@ -46,7 +47,7 @@ try{
 
     return(
         <>
-          <div>
+          <div className="details-container">
             <h2>Log In</h2>
                 {error && <p className="error">{error}</p>}
              <form onSubmit={handleSubmit}>
