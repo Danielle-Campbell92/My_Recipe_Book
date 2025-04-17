@@ -1,6 +1,6 @@
 
 import { Routes, Route, Link } from 'react-router-dom'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import Recipe from './components/Recipe'
 import Register from './components/Register'
 import './App.css'
@@ -12,7 +12,40 @@ function App() {
   const [token, setToken] = useState(null)
   const [recipes, setRecipes] = useState([])
   const [favorite, setFavorite] = useState([])
+  const [username, setUsername] = useState([])
   const [moreDetails, setMoreDetails] = useState(null)  
+
+useEffect(()=> {
+  console.log("current user", username)
+}, [username])
+
+  useEffect(() => {
+    const storedToken = localStorage.getItem("token");
+    if (storedToken) {
+      setToken(storedToken);
+    }
+  }, [])
+
+useEffect(()=>{
+  const getFav = async ()=> {
+    if(!token) return
+
+  try{
+    const response = await fetch ("https://fsa-recipe.up.railway.app/api/favorites", {
+      method: "GET",
+      headers: {
+        Authorization: `Bearer ${token}`,
+      }
+    })
+    const result = await response.json()
+    console.log("Favorite", result)
+    setFavorite(result)
+  }catch(error){
+    console.log("error")
+  }
+}
+getFav()}, [token])
+
 
   return (
     <>
@@ -31,12 +64,17 @@ function App() {
           <Route path='/register' element={<Register setToken={setToken}/>}/>
           <Route path='/login' element={<LogIn setToken={setToken}/>}/>
           <Route path='/recipe' element={
-              <div key={moreDetails ? 'details' : 'list'}>
+              <div>
               {moreDetails ? <RecipeDetails moreDetails={moreDetails} setMoreDetails={setMoreDetails} />
-               : <Recipe recipes={recipes} setRecipes={setRecipes} setMoreDetails={setMoreDetails} favorite={favorite} setFavorite={setFavorite} />}
+               : <Recipe recipes={recipes} setRecipes={setRecipes} setMoreDetails={setMoreDetails} favorite={favorite} setFavorite={setFavorite} token={token}/>}
                </div>
               }/>
-          <Route path='/favorite' element={<Favorite favorite={favorite} setFavorite={setFavorite}/>}/>
+          <Route path='/favorite' element={
+            <div>
+             {favorite ? <Favorite favorite={favorite} setFavorite={setFavorite}/>
+              : <p>No Favorites Saved Yet! Add Favorites!</p>}
+              </div>
+            }/>
       </Routes>
     </div>
     </div>

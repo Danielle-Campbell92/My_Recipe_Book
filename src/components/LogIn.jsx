@@ -32,6 +32,7 @@ try{
 
             if (result.token){
                 setToken(result.token)
+                localStorage.setItem("token", result.token)
                 navigate("/recipe")
             }else{
                 setError(result.message || "Login Failed."

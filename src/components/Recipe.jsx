@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 
-function Recipe({ setMoreDetails }){
+function Recipe({ setMoreDetails, token }){
      const [recipes, setRecipes] = useState([])
      const [favorite, setFavorite] = useState([])
 
@@ -31,12 +31,32 @@ function Recipe({ setMoreDetails }){
           <p>Category: {recipe.strCategory}</p>
           <p>Type of Cuisine: {recipe.strArea}</p>
           <button onClick={()=> {
-            console.log("Clicked!", recipe)
-            setMoreDetails(recipe)}} className='button'>Recipe Details</button>
-          <button className='button' onClick={()=>{
+             console.log("Clicked!", recipe)
+                setMoreDetails(recipe)}} className='button'>Recipe Details</button>
+          <button className='button' onClick={async ()=>{
             console.log("Clicked", recipe)
-            setFavorite([...favorite, recipe])}}>Add to Favorites</button>
-            </div>
+            try {
+                const response = await fetch("https://fsa-recipe.up.railway.app/api/favorites", {
+                  method: "POST",
+                  headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${token}`,
+                  },
+                  body: JSON.stringify({
+                    recipeId: recipe.idMeal, 
+                  }),
+                });
+                const result = await response.json();
+                if (response.ok) {
+                  setFavorite((prev) => [...prev, recipe])
+                } else {
+                  alert(result.message || "Failed to add favorite.")
+                }
+              } catch (err) {
+                console.error("Error adding favorite:", err);
+              }
+            }}>Add to Favorites</button>
+        </div>
         )}
         
     </div>
