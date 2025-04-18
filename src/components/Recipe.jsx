@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
 
+
 function Recipe({ setMoreDetails, token }){
      const [recipes, setRecipes] = useState([])
      const [favorite, setFavorite] = useState([])
@@ -18,6 +19,37 @@ function Recipe({ setMoreDetails, token }){
      console.log("First useEffect")
    }, [])
 
+const handleAddFavorites = async (recipe) => {
+    if (!token) {
+        alert("You're not logged in!")
+        return
+      }
+      try {
+        const response = await fetch("https://fsa-recipe.up.railway.app/api/favorites", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify({
+            mealId: recipe.idMeal,
+            name: recipe.strMeal,
+            imageUrl: recipe.strMealThumb
+          }),
+        })
+  
+        if (response.ok) {
+          const result = await response.json()
+          console.log("Favorite added:", result)
+          setFavorite((prevFavorites) => [...prevFavorites, result])
+        } else {
+          const errorResult = await response.json()
+          console.log("Error adding favorite:", errorResult.message)
+        }
+      } catch (error) {
+        console.error("Error adding favorite:", error)
+      }
+    }
 
    return(
     <>
@@ -34,39 +66,12 @@ function Recipe({ setMoreDetails, token }){
           <button onClick={()=> {
              console.log("Clicked!", recipe)
                 setMoreDetails(recipe)}} className='button'>Recipe Details</button>
-     <button className='button' onClick={async () => {
-         console.log("Adding to favorites", recipe);
-        console.log("Token:", token);
-
-         if (!token) {
-          alert("You're not logged in!");
-        return;
-        }
-
-         try {
-           const response = await fetch("https://fsa-recipe.up.railway.app/api/favorites", {
-            method: "POST",
-            headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-         },
-            body: JSON.stringify({
-            mealId: recipe.idMeal,
-            name: recipe.strMeal,
-            imageUrl: recipe.strMealThumb
-        }),
-     })
-        const result = await response.json();
-          console.log("Favorite:", result);
-     } catch (error) {
-         console.error("Error adding favorite:", error);
-     }
-     }}>Add to Favorites</button>
+          <button className='button' onClick={() => handleAddFavorites(recipe)}>Add to Favorites</button>
         </div>
         )}
         </div>
     </div>
     </>
-   )
-}
+   )}
+
 export default Recipe

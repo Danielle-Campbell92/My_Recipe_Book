@@ -39,7 +39,7 @@ useEffect(()=>{
     })
     const result = await response.json()
     console.log("Favorite", result)
-    setFavorite(result)
+    setFavorite(result.data)
   }catch(error){
     console.log("error")
   }

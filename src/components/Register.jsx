@@ -47,6 +47,7 @@ function Register({setToken}){
         if(result.token){
             setToken(result.token)
             localStorage.setItem("token", result.token)
+            setSuccess(true)
             navigate("/recipe")
         }else{
             setError(result.message || "Try again")

@@ -4,6 +4,12 @@
   border: 5px solid black;
 }
 
+.foodImage{
+  height: auto;
+  width:200px;
+  border: 5px solid black
+}
+
 h1{
 font-size: 60px;
 font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
