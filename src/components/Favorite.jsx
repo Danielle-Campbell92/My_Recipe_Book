@@ -1,9 +1,13 @@
-function Favorite({favorite, setFavorite}){
+import React from "react"
+import { useState } from "react"
 
-const handleRemoveFavorite = async (recipeId)=> {
+function Favorite({favorite, setFavorite}){
+const [filter, setFilter] = useState("")
+    
+const handleRemoveFavorite = async (favoriteId)=> {
     try{
         const token = localStorage.getItem("token")
-        const response = await fetch("https://fsa-recipe.up.railway.app/api/favorites/:id", {
+        const response = await fetch(`https://fsa-recipe.up.railway.app/api/favorites/${favoriteId}`, {
             method: "DELETE",
             headers: {
               Authorization: `Bearer ${token}`
@@ -11,11 +15,8 @@ const handleRemoveFavorite = async (recipeId)=> {
           })
           if (response.ok) {
             setFavorite((prevFavorites) =>
-              prevFavorites.filter((fav) => {
-                const recipe = fav.recipe || fav;
-                return recipe.idMeal !== recipeId;
-              })
-            );
+              prevFavorites.filter((fav) => fav.id !== favoriteId)
+            )
           } else {
             console.error("Failed to remove favorite");
           }
@@ -24,31 +25,36 @@ const handleRemoveFavorite = async (recipeId)=> {
         }
       };
    
+    const filteredFavorites = favorite.filter((fav) => {
+      const recipe = fav.recipe || fav
+        return recipe.strMeal.toLowerCase().includes(filter.toLowerCase())
+      })
 
     return(
      <div>
+        <input type="text" placeholder="Search" value={filter} 
+        onChange={(e) => setFilter(e.target.value)} className="filter"/>
         <h1>Favorite Recipes!</h1>
-    <div className='card-container'>
-        {favorite.length === 0 ? (
-        <p>No Favorites Added</p>
-      ) : (
-        favorite.map((fav) => {
-          const recipe = fav.recipe || fav;
-          return (
-            <div key={recipe.idMeal} className='card'>
-              <h3>{recipe.strMeal}</h3>
-              <img src={recipe.strMealThumb} alt={recipe.strMeal} className="foodImage"/>
-              <br></br>
-              <button onClick={() => handleRemoveFavorite(recipe.idMeal)} className="button">
-                Remove From Favorites
-              </button>
-            </div>
-          );
+        <div className='card-container'>
+             {filteredFavorites.length === 0 ? (
+             <p>No Favorites Added</p>
+              ) : (
+              filteredFavorites.map((fav) => {
+                 const recipe = fav.recipe || fav;
+              return (
+                <div key={recipe.idMeal} className='card'>
+                 <h3>{recipe.strMeal}</h3>
+                 <img src={recipe.strMealThumb} alt={recipe.strMeal} className="foodImage"/>
+                 <br></br>
+                 <button onClick={() => handleRemoveFavorite(fav.id)} className="button">
+                     Remove From Favorites
+                </button>
+         </div>
+          )
         })
       )}
     </div>
     </div>
-  
     )
 }
 export default Favorite
