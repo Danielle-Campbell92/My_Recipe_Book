@@ -62,7 +62,7 @@ function Register({setToken}){
         <div className='details-container'>
         <h2>Sign Up for More Recipes!</h2>
         {error && <p className='error'>{error}</p>}
-        {success && <p className='success'>Registration Successful!🎉</p>}
+        {success && <p className='success'>Registration Successful!</p>}
         <form onSubmit={handleSubmit}>
             <label>
                 Username: <input value={username} onChange={(e) => setUsername(e.target.value)}/>

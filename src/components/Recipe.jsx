@@ -1,26 +1,8 @@
-import { useState, useEffect } from 'react'
-
-
-function Recipe({ setMoreDetails, token }){
-     const [recipes, setRecipes] = useState([])
-     const [favorite, setFavorite] = useState([])
+function Recipe({ recipes, setRecipes, setMoreDetails, favorite, setFavorite, token }){
    
-   useEffect(()=> {
-     const getRecipe = async () => {
-       try{
-         const res = await fetch ("https://fsa-recipe.up.railway.app/api/recipes")
-         const result = await res.json()
-         setRecipes(result)
-       }catch(error){
-         console.log(error)
-       }
-     }
-     getRecipe()
-     console.log("First useEffect")
-   }, [])
-
 const handleAddFavorites = async (recipe) => {
-    if (!token) {
+  
+  if (!token) {
         alert("You're not logged in!")
         return
       }
@@ -59,7 +41,7 @@ const handleAddFavorites = async (recipe) => {
         {
         recipes.map((recipe) => 
         <div key={recipe.idMeal} className='card'>
-          <img src={recipe.strMealThumb} alt={recipe.strMeal} className="foodImg"/>
+          <img src={recipe.strMealThumb} className="foodImg"/>
           <h2>{recipe.strMeal}</h2>
           <p>Category: {recipe.strCategory}</p>
           <p>Type of Cuisine: {recipe.strArea}</p>

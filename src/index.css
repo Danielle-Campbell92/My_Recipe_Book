@@ -92,11 +92,34 @@ body{
   width: 300px;
   opacity: .9;
   border-radius: 10%;
-  
+}
+
+.card:hover{
+  border: 5px solid red
 }
 
 .details-container{
   background: linear-gradient(gray,whitesmoke, gray);
   opacity: .9;
   padding: 15px;
+}
+
+.add-container{
+  background: linear-gradient(gray,whitesmoke, gray);
+  opacity: .9;
+  padding: 15px;
+  text-align: center;
+  
+}
+
+.filter{
+  padding: 15px;
+  font-size: large;
+  border: 2px solid black;
+  opacity: .9;
+}
+
+.filter:hover{
+  border: 5px solid red;
+
 }

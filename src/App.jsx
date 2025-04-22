@@ -1,29 +1,68 @@
 
 import { Routes, Route, Link } from 'react-router-dom'
-import { useEffect, useState } from 'react'
+import {  useEffect, useState } from 'react'
 import Recipe from './components/Recipe'
 import Register from './components/Register'
 import './App.css'
 import LogIn from './components/LogIn'
 import RecipeDetails from './components/RecipeDetails'
 import Favorite from './components/Favorite'
+import AddRecipe from './components/AddRecipe'
 
 function App() {
   const [token, setToken] = useState(null)
   const [recipes, setRecipes] = useState([])
   const [favorite, setFavorite] = useState([])
-  const [username, setUsername] = useState([])
   const [moreDetails, setMoreDetails] = useState(null)  
 
-useEffect(()=> {
-  const storedUsername = localStorage.getItem("username")
-  if (storedUsername) setUsername(storedUsername)})
+
+useEffect(() => {
+    if (favorite) {
+      localStorage.setItem("favorite", JSON.stringify(favorite))
+  }}, [favorite])
+
+useEffect(() => {
+  const storedFavorite = localStorage.getItem("favorite");
+  if (storedFavorite) {
+    setFavorite(JSON.parse(storedFavorite));  
+  }
+}, [])
 
   useEffect(() => {
-    const storedToken = localStorage.getItem("token");
+    const storedToken = localStorage.getItem("token", token)
     if (storedToken) {
       setToken(storedToken);
     }
+  }, [])
+
+    useEffect(()=> {
+     const getRecipe = async () => {
+       try{
+         const res = await fetch ("https://fsa-recipe.up.railway.app/api/recipes")
+         const result = await res.json()
+         setRecipes([...recipes, newRecipe])
+       }catch(error){
+         console.log(error)
+       }
+     }
+     getRecipe()
+     console.log("First useEffect")
+   }, [])
+
+
+   useEffect(() => {
+    const fetchRecipes = async () => {
+      try {
+        const response = await fetch("https://fsa-recipe.up.railway.app/api/recipes")
+        const result = await response.json()
+        console.log("Fetched recipes:", result)
+        setRecipes(result)
+      } catch (error) {
+        console.error("Error fetching recipes:", error)
+      }
+    }
+  
+    fetchRecipes()
   }, [])
 
 useEffect(()=>{
@@ -56,6 +95,7 @@ getFav()}, [token])
           <Link to="/login" className='navLink'>Log In</Link>
           <Link to="/recipe" className="navLink">Recipes</Link>
           <Link to="/favorite" className="navLink">Favorite Recipes</Link>
+          <Link to="/addRecipe" className='navLink'>Add Recipe</Link>
         </div>
       </nav> 
     <div className="container">
@@ -75,6 +115,7 @@ getFav()}, [token])
               : <p>No Favorites Saved Yet! Add Favorites!</p>}
               </div>
             }/>
+          <Route path='/addRecipe' element={<AddRecipe recipes={recipes} setRecipes={setRecipes} />}/>
       </Routes>
     </div>
     </div>

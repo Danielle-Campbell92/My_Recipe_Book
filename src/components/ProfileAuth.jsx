@@ -43,7 +43,7 @@ useEffect(()=> {
             { userInfo ? 
             ( <>
                 <h2>Welcome back {userInfo.username}!</h2>
-              </>) : (<p>Loading...</p>)
+              </>) : (<p>Loading</p>)
             }
         </div>
         </>
